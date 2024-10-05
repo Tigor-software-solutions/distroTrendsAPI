@@ -45,8 +45,35 @@ async  function  addDistro(distro) {
   }
 }
 
+async  function  getUserTypes() {
+  try {
+    let  pool = await  sql.connect(config);
+    let  userType = await  pool.request().query("SELECT * FROM tbl_UserType");
+    return  userType.recordsets;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+async  function  getUserType(userTypeId) {
+  try {
+    let  pool = await  sql.connect(config);
+    let  userType = await  pool.request()
+    .input('input_parameter', sql.Int, userTypeId)
+    .query("SELECT * from tbl_UserType where Id = @input_parameter");
+    return  userType.recordsets;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+
 module.exports = {
   getDistros: getDistros,
   getDistro:  getDistro,
-  addDistro:  addDistro
+  addDistro:  addDistro,
+  getUserTypes: getUserTypes,
+  getUserType: getUserType
 }
